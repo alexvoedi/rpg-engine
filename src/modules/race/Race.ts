@@ -7,12 +7,14 @@ export interface RaceOptions {}
 export type RaceID = number;
 
 export class Race {
-  id: RaceID;
+  static _id: RaceID = 0;
 
-  name = "";
+  readonly id: RaceID;
 
-  constructor(id: RaceID, values: RaceValues, options?: RaceOptions) {
-    this.id = id;
+  name: string;
+
+  constructor(values: RaceValues, options?: RaceOptions) {
+    this.id = Race._id++;
 
     this.name = values.name;
   }

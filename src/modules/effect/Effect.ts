@@ -7,12 +7,14 @@ export interface EffectOptions {}
 export type EffectID = number;
 
 export class Effect {
-  id: EffectID;
+  static _id: EffectID = 0;
+
+  readonly id: EffectID;
 
   name: string;
 
-  constructor(id: EffectID, values: EffectValues, options?: EffectOptions) {
-    this.id = id;
+  constructor(values: EffectValues, options?: EffectOptions) {
+    this.id = Effect._id++;
 
     this.name = values.name;
   }

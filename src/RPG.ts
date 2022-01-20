@@ -4,12 +4,12 @@ import { RaceService } from "./modules/race/RaceService";
 
 export class RPG {
   readonly raceService: RaceService;
-  readonly creatureService: CreatureService;
   readonly classificationService: ClassificationService;
+  readonly creatureService: CreatureService;
 
   constructor() {
     this.raceService = new RaceService();
-    this.creatureService = new CreatureService();
     this.classificationService = new ClassificationService();
+    this.creatureService = new CreatureService(this);
   }
 }

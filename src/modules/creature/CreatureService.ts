@@ -1,29 +1,42 @@
+import { RPG } from "../..";
 import {
   Creature,
   CreatureID,
   CreatureOptions,
   CreatureValues,
 } from "./Creature";
+import {
+  CreatureBuilder,
+  CreatureBuilderOptions,
+  CreatureBuilderValues,
+} from "./CreatureBuilder";
 
 export class CreatureService {
-  private creatures: Map<CreatureID, Creature>;
+  private creatures: Creature[];
+  private creatureBuilder: CreatureBuilder;
 
-  constructor() {
-    this.creatures = new Map();
+  constructor(private readonly rpg: RPG) {
+    this.creatures = [];
+    this.creatureBuilder = new CreatureBuilder(rpg);
   }
 
   public createCreature(
-    id: CreatureID,
-    values: CreatureValues,
-    options?: CreatureOptions
+    values: CreatureBuilderValues,
+    options?: CreatureBuilderOptions
   ) {
-    const creature = new Creature(id, values, options);
-    this.creatures.set(id, creature);
+    const creature = this.creatureBuilder.build(values, options);
+    this.creatures.push(creature);
     return creature;
   }
 
-  public getCreature(id: CreatureID) {
-    this.creatures.get(id);
+  public getCreatureById(id: CreatureID) {
+    const creature = this.creatures.find((creature) => creature.id === id);
+
+    if (!creature) {
+      throw new Error("Creature not found");
+    }
+
+    return creature;
   }
 
   public updateCreature(
@@ -31,13 +44,27 @@ export class CreatureService {
     values: CreatureValues,
     options?: CreatureOptions
   ) {
-    const creature = this.creatures.get(id);
+    const creature = this.creatures.find((creature) => creature.id === id);
+
+    if (!creature) {
+      throw new Error("Creature not found");
+    }
 
     Object.assign(creature, values);
     Object.assign(creature, options);
+
+    return creature;
   }
 
   public removeCreature(id: CreatureID) {
-    this.creatures.delete(id);
+    const creatureIndex = this.creatures.findIndex(
+      (creature) => creature.id === id
+    );
+
+    if (creatureIndex < 0) {
+      throw new Error("Creature does not exist");
+    }
+
+    return this.creatures.splice(creatureIndex, 1);
   }
 }

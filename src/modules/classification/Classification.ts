@@ -7,16 +7,14 @@ export interface ClassificationOptions {}
 export type ClassificationID = number;
 
 export class Classification {
-  id: ClassificationID;
+  static _id: ClassificationID = 0;
+
+  readonly id: ClassificationID;
 
   name: string;
 
-  constructor(
-    id: ClassificationID,
-    values: ClassificationValues,
-    options?: ClassificationOptions
-  ) {
-    this.id = id;
+  constructor(values: ClassificationValues, options?: ClassificationOptions) {
+    this.id = Classification._id++;
 
     this.name = values.name;
   }
