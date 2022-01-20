@@ -1,9 +1,15 @@
-import { Creature } from "./Creature";
+import { ClassificationService } from "./modules/classification/ClassificationService";
+import { CreatureService } from "./modules/creature/CreatureService";
+import { RaceService } from "./modules/race/RaceService";
 
 export class RPG {
-  creatures: Set<Creature>;
+  readonly raceService: RaceService;
+  readonly creatureService: CreatureService;
+  readonly classificationService: ClassificationService;
 
   constructor() {
-    this.creatures = new Set();
+    this.raceService = new RaceService();
+    this.creatureService = new CreatureService();
+    this.classificationService = new ClassificationService();
   }
 }
