@@ -9,7 +9,9 @@ export type CreatureBuilderValues = Omit<
   classificationName: string;
 };
 
-export type CreatureBuilderOptions = CreatureOptions;
+export type CreatureBuilderOptions = Omit<CreatureOptions, "abilities"> & {
+  abilityNames: string[];
+};
 
 export class CreatureBuilder {
   constructor(private readonly rpg: RPG) {}
@@ -22,13 +24,20 @@ export class CreatureBuilder {
         values.classificationName
       );
 
+    const abilities = options?.abilityNames.map((abilityName) =>
+      this.rpg.abilityService.getAbilityByName(abilityName)
+    );
+
     return new Creature(
       {
         ...values,
         race,
         classification,
       },
-      options
+      {
+        ...options,
+        abilities,
+      }
     );
   }
 }

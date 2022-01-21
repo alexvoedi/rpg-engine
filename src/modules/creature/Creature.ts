@@ -1,4 +1,4 @@
-import { Ability } from "../ability/Ability";
+import { Ability, AbilityID } from "../ability/Ability";
 import { Classification } from "../classification/Classification";
 import { Race } from "../race/Race";
 
@@ -11,7 +11,7 @@ export interface CreatureValues {
 }
 
 export interface CreatureOptions {
-  abilities: Ability[];
+  abilities?: Ability[];
 }
 
 export type CreatureID = number;
@@ -41,7 +41,22 @@ export class Creature {
     this.abilities = options?.abilities ?? [];
   }
 
-  addAbility(ability: Ability) {
-    this.abilities.push(ability);
+  attack(abilityName: string, target: Creature) {
+    const ability = this.getAbilityByName(abilityName);
+
+    if (!ability) {
+      throw new Error("Creature does not have this ability");
+    }
+
+    target.damage(ability.damage);
+  }
+
+  damage(value: number) {
+    this.hitPoints -= value;
+    console.log(this);
+  }
+
+  getAbilityByName(abilityName: string) {
+    return this.abilities.find((ability) => ability.name === abilityName);
   }
 }

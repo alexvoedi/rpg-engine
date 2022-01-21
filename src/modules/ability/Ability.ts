@@ -9,25 +9,31 @@ export interface AbilityValues {
 
 export interface AbilityOptions {
   effects?: Effect[];
+  damage?: number;
 }
 
 export type AbilityID = number;
 
 export class Ability {
-  id: AbilityID;
+  static _id: AbilityID = 0;
 
-  name = "";
-  range = 0;
-  type = AbilityType.Physical;
+  readonly id: AbilityID;
+
+  name: string;
+  range: number;
+  type: AbilityType;
+
+  damage: number;
   effects: Effect[];
 
-  constructor(id: AbilityID, values: AbilityValues, options?: AbilityOptions) {
-    this.id = id;
+  constructor(values: AbilityValues, options?: AbilityOptions) {
+    this.id = Ability._id++;
 
     this.name = values.name;
     this.range = values.range;
     this.type = values.type;
 
+    this.damage = options?.damage || 0;
     this.effects = options?.effects || [];
   }
 }
