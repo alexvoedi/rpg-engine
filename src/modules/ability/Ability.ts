@@ -1,10 +1,12 @@
-import { AbilityType } from "../../DamageType";
+import { AbilityTargets } from "../../enums/AbilityTargets";
+import { AbilityType } from "../../enums/AbilityType";
 import { Effect } from "../effect/Effect";
 
 export interface AbilityValues {
   name: string;
   range: number;
   type: AbilityType;
+  targets: AbilityTargets;
 }
 
 export interface AbilityOptions {
@@ -22,6 +24,7 @@ export class Ability {
   name: string;
   range: number;
   type: AbilityType;
+  targets: AbilityTargets;
 
   damage: number;
   effects: Effect[];
@@ -32,6 +35,7 @@ export class Ability {
     this.name = values.name;
     this.range = values.range;
     this.type = values.type;
+    this.targets = values.targets;
 
     this.damage = options?.damage || 0;
     this.effects = options?.effects || [];

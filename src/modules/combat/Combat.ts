@@ -1,34 +1,48 @@
-import { Creature, CreatureID } from "../creature/Creature";
+import { AbilityTargets } from "../../enums/AbilityTargets";
+import { Ability } from "../ability/Ability";
+import { Creature } from "../creature/Creature";
 
 export class Combat {
-  readonly creatures: Creature[][];
+  readonly attacker: Creature;
+  readonly targets: Creature[];
 
-  constructor(creatures: Creature[][]) {
-    this.creatures = creatures;
+  constructor(attacker: Creature) {
+    this.attacker = attacker;
+    this.targets = [];
   }
 
-  attack(sourceID: CreatureID, abilityName: string, targetID: CreatureID) {
-    const source = this.findCreatureById(sourceID);
-    const target = this.findCreatureById(targetID);
+  attack(attacker: Creature, ability: Ability) {
+    let damagedCreatures: Creature[] = [];
 
-    if (source.groupIndex === target.groupIndex) {
-      throw new Error("Can not attack creatures from same group");
+    if (ability.targets === AbilityTargets.One) {
+      damagedCreatures = this.attackOne(attacker, ability);
+    } else if (ability.targets === AbilityTargets.Multiple) {
+      //
+    } else {
+      //
     }
 
-    source.creature.attack(abilityName, target.creature);
+    this.reactToAttack(damagedCreatures, attacker);
   }
 
-  private findCreatureById(id: CreatureID) {
-    for (let i = 0; i < this.creatures.length; i++) {
-      for (let j = 0; j < this.creatures[i].length; j++) {
-        const creature = this.creatures[i][j];
+  attackOne(attacker: Creature, ability: Ability) {
+    const { target } = attacker;
 
-        if (creature.id === id) {
-          return { creature, groupIndex: i };
-        }
-      }
+    if (!target) {
+      throw new Error("No target");
     }
 
-    throw new Error("Creature does not exist");
+    const damage = ability.damage;
+
+    target.damage(damage);
+
+    return [target];
+  }
+
+  reactToAttack(damagedCreatures: Creature[], attacker: Creature) {
+    damagedCreatures.forEach((creature) => {
+      creature.combat = this;
+      creature.target = attacker;
+    });
   }
 }
