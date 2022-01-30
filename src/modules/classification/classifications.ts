@@ -1,10 +1,23 @@
 export const classifications = [
   {
-    id: 1,
     name: "warrior",
+    stats: {
+      health: 13,
+      strength: 1.8,
+    },
   },
   {
-    id: 2,
     name: "mage",
+    stats: {
+      health: 10,
+      strength: 0.8,
+    },
+  },
+  {
+    name: "hunter",
+    stats: {
+      health: 11,
+      strength: 1.0,
+    },
   },
 ];

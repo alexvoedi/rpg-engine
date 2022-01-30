@@ -1,3 +1,5 @@
+import { Vec2 } from "../..";
+import { attributeFunction, healthFunction } from "../../functions/stats";
 import { Ability } from "../ability/Ability";
 import { Classification } from "../classification/Classification";
 import { Combat } from "../combat/Combat";
@@ -6,9 +8,9 @@ import { Race } from "../race/Race";
 export interface CreatureValues {
   name: string;
   level: number;
-  hitPoints: number;
   race: Race;
   classification: Classification;
+  position: Vec2;
 }
 
 export interface CreatureOptions {
@@ -28,20 +30,24 @@ export class Creature {
 
   name: string;
   level: number;
-  hitPoints: number;
   race: Race;
   classification: Classification;
+  position: Vec2;
+
+  currentHealth: number;
 
   constructor(values: CreatureValues, options?: CreatureOptions) {
     this.id = Creature._id++;
 
     this.name = values.name;
     this.level = values.level;
-    this.hitPoints = values.hitPoints;
     this.race = values.race;
     this.classification = values.classification;
+    this.position = values.position;
 
     this.abilities = options?.abilities ?? [];
+
+    this.currentHealth = this.maxHealth;
   }
 
   attack(abilityName: string, destination?: any) {
@@ -54,8 +60,22 @@ export class Creature {
     this.combat.attack(this, ability);
   }
 
+  get maxHealth() {
+    return healthFunction({
+      level: this.level,
+      base: this.classification.stats.health,
+    });
+  }
+
+  get strength() {
+    return attributeFunction({
+      level: this.level,
+      base: this.classification.stats.strength,
+    });
+  }
+
   damage(value: number) {
-    this.hitPoints -= value;
+    this.currentHealth -= value;
   }
 
   getAbilityByName(abilityName: string) {
