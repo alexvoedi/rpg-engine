@@ -29,6 +29,10 @@ export class CreatureService {
     return creature;
   }
 
+  public getCreatures() {
+    return this.creatures;
+  }
+
   public getCreatureById(id: CreatureID) {
     const creature = this.creatures.find((creature) => creature.id === id);
 
@@ -66,5 +70,9 @@ export class CreatureService {
     }
 
     return this.creatures.splice(creatureIndex, 1);
+  }
+
+  public update(delta: number) {
+    this.creatures.forEach((creature) => creature.update(delta));
   }
 }

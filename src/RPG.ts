@@ -53,5 +53,8 @@ export class RPG {
     }
   }
 
-  private loop(delta: number) {}
+  private loop(delta: number) {
+    this.creatureService.update(delta)
+
+  }
 }

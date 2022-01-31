@@ -6,10 +6,10 @@ interface StatValues {
 interface StatOptions {}
 
 export const healthFunction = (values: StatValues, options?: StatOptions) => {
-  const f = 0.1 * values.base;
+  const f = values.base;
 
   const b = 10 * values.level;
-  const e = f * 0.1 * values.level;
+  const e = 0.1 * f * values.level;
   const t = Math.pow(f * values.level, 2);
 
   return Math.round(b + Math.pow(2, e) + t);

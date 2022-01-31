@@ -75,7 +75,11 @@ export class Creature {
   }
 
   damage(value: number) {
-    this.currentHealth -= value;
+    this.currentHealth = Math.max(0, this.currentHealth - value);
+  }
+
+  isAlive() {
+    return this.currentHealth > 0;
   }
 
   getAbilityByName(abilityName: string) {
@@ -89,4 +93,6 @@ export class Creature {
 
     return ability;
   }
+
+  update(delta: number) {}
 }

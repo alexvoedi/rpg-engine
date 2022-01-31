@@ -5,4 +5,16 @@ export const races = [
   {
     name: "orc",
   },
+  {
+    name: "undead",
+  },
+  {
+    name: "elv",
+  },
+  {
+    name: "dwarf",
+  },
+  {
+    name: "dragonkin",
+  },
 ];

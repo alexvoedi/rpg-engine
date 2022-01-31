@@ -1,3 +1,4 @@
+import { Vec2 } from "../..";
 import { AbilityTargets } from "../../enums/AbilityTargets";
 import { Ability } from "../ability/Ability";
 import { Creature } from "../creature/Creature";
@@ -32,11 +33,23 @@ export class Combat {
       throw new Error("No target");
     }
 
+    if (!this.isTargetInRange(attacker, target, ability)) {
+      throw new Error("Target out of distance");
+    }
+
     const damage = ability.damage;
 
     target.damage(damage);
 
     return [target];
+  }
+
+  private isTargetInRange(
+    attacker: Creature,
+    target: Creature,
+    ability: Ability
+  ) {
+    return Vec2.dist(attacker.position, target.position) <= ability.range;
   }
 
   reactToAttack(damagedCreatures: Creature[], attacker: Creature) {

@@ -1,13 +1,13 @@
 export class Vec2 {
-  private x: number;
-  private y: number;
+  x: number;
+  y: number;
 
   constructor(x = 0, y = 0) {
     this.x = x;
     this.y = y;
   }
 
-  len() {
+  get len() {
     return Math.hypot(this.x, this.y);
   }
 
@@ -55,7 +55,53 @@ export class Vec2 {
     return this;
   }
 
-  get copy() {
+  mult(value: number) {
+    this.x *= value;
+    this.y *= value;
+
+    return this;
+  }
+
+  div(value: number) {
+    if (value === 0) throw new Error("Division by zero not defined");
+
+    this.x /= value;
+    this.y /= value;
+
+    return this;
+  }
+
+  scale(value: number) {
+    if (this.isZeroVector()) throw new Error("Cannot scale the zero vector");
+
+    const factor = value / this.len;
+
+    this.mult(factor);
+
+    return this;
+  }
+
+  norm() {
+    this.div(this.len);
+
+    return this;
+  }
+
+  invert() {
+    this.mult(-1);
+
+    return this;
+  }
+
+  copy() {
     return new Vec2(this.x, this.y);
+  }
+
+  isZeroVector() {
+    return Vec2.isZeroVector(this);
+  }
+
+  static isZeroVector(v: Vec2) {
+    return v.x === 0 && v.y === 0;
   }
 }
